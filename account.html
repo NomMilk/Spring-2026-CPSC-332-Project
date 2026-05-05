@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GrandTheftDeals</title>
-    <!-- Link to an external CSS file -->
+    <title>GrandTheftDeals — Account</title>
     <link rel="stylesheet" href="css/global.css">
 </head>
 
@@ -27,7 +26,178 @@
     </nav>
     </header>
 
-    <div class="MainPageBanner">
-    </div>
+    <main class="account-page">
+        <div class="account-container">
+
+            <h1 class="account-heading">Account</h1>
+
+            <div class="account-tabs">
+                <button class="account-tab active" onclick="showTab('signin')">Sign In</button>
+                <button class="account-tab" onclick="showTab('create')">Create Account</button>
+            </div>
+
+            <!-- ── Sign In ── -->
+            <form id="signin-form" class="account-form" onsubmit="handleSignIn(event)">
+                <div class="form-group">
+                    <label for="signin-email">Email</label>
+                    <input id="signin-email" type="email" placeholder="Enter your email..." required>
+                </div>
+                <div class="form-group">
+                    <label for="signin-password">Password</label>
+                    <input id="signin-password" type="password" placeholder="Enter your password..." required>
+                </div>
+                <div id="signin-error" class="form-error hidden"></div>
+                <button type="submit" class="form-submit">Sign In</button>
+            </form>
+
+            <!-- ── Create Account ── -->
+            <form id="create-form" class="account-form hidden" onsubmit="handleCreate(event)">
+
+                <!-- Name -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="create-firstname">First Name</label>
+                        <input id="create-firstname" type="text" placeholder="First name..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="create-lastname">Last Name</label>
+                        <input id="create-lastname" type="text" placeholder="Last name..." required>
+                    </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="form-group">
+                    <label for="create-phone">Phone Number</label>
+                    <input id="create-phone" type="tel" placeholder="(555) 555-5555" required>
+                </div>
+                <div class="form-group">
+                    <label for="create-email">Email</label>
+                    <input id="create-email" type="email" placeholder="Enter your email..." required>
+                </div>
+
+                <!-- Address -->
+                <div class="form-section-label">Address</div>
+
+                <div class="form-row">
+                    <div class="form-group form-group-sm">
+                        <label for="create-street-num">Street No.</label>
+                        <input id="create-street-num" type="text" placeholder="123" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="create-street-name">Street Name</label>
+                        <input id="create-street-name" type="text" placeholder="Main St" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="create-apt">
+                        Apartment No. <span class="form-optional">(Optional)</span>
+                    </label>
+                    <input id="create-apt" type="text" placeholder="Apt, Suite, Unit...">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="create-city">City</label>
+                        <input id="create-city" type="text" placeholder="City" required>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="create-state">State</label>
+                        <input id="create-state" type="text" placeholder="CA" maxlength="2" required>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="create-zip">Zip Code</label>
+                        <input id="create-zip" type="text" placeholder="90210" maxlength="10" required>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-section-label">Security</div>
+
+                <div class="form-group">
+                    <label for="create-password">Password</label>
+                    <input id="create-password" type="password" placeholder="Create a password..." required>
+                    <span class="form-hint">
+                        Min. 8 characters &mdash; must include uppercase, lowercase, number, and special character
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="create-confirm">Confirm Password</label>
+                    <input id="create-confirm" type="password" placeholder="Confirm your password..." required>
+                </div>
+
+                <div id="create-error" class="form-error hidden"></div>
+                <button type="submit" class="form-submit">Create Account</button>
+            </form>
+
+        </div>
+    </main>
+
+    <script>
+        function showTab(tab) {
+            const signinForm = document.getElementById('signin-form');
+            const createForm = document.getElementById('create-form');
+            const tabs = document.querySelectorAll('.account-tab');
+
+            if (tab === 'signin') {
+                signinForm.classList.remove('hidden');
+                createForm.classList.add('hidden');
+                tabs[0].classList.add('active');
+                tabs[1].classList.remove('active');
+            } else {
+                createForm.classList.remove('hidden');
+                signinForm.classList.add('hidden');
+                tabs[1].classList.add('active');
+                tabs[0].classList.remove('active');
+            }
+        }
+
+        function validatePassword(pw) {
+            if (pw.length < 8)            return 'Password must be at least 8 characters long.';
+            if (!/[A-Z]/.test(pw))        return 'Password must include at least one uppercase letter.';
+            if (!/[a-z]/.test(pw))        return 'Password must include at least one lowercase letter.';
+            if (!/[0-9]/.test(pw))        return 'Password must include at least one number.';
+            if (!/[^A-Za-z0-9]/.test(pw)) return 'Password must include at least one special character.';
+            return null;
+        }
+
+        function showError(id, message) {
+            const el = document.getElementById(id);
+            el.textContent = message;
+            el.classList.remove('hidden');
+        }
+
+        function clearError(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function handleSignIn(event) {
+            event.preventDefault();
+            clearError('signin-error');
+            // TODO: connect to backend authentication
+        }
+
+        function handleCreate(event) {
+            event.preventDefault();
+            clearError('create-error');
+
+            const password = document.getElementById('create-password').value;
+            const confirm  = document.getElementById('create-confirm').value;
+
+            const pwError = validatePassword(password);
+            if (pwError) {
+                showError('create-error', pwError);
+                return;
+            }
+
+            if (password !== confirm) {
+                showError('create-error', 'Passwords do not match.');
+                return;
+            }
+
+            // TODO: connect to backend registration
+        }
+    </script>
+
 </body>
 </html>

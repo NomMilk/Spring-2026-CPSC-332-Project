@@ -45,9 +45,9 @@ button
 
 nav img
 {
-    margin-top: -50px;
     margin-right: 50px;
-    float: right;
+    margin-left: auto;
+    align-self: center;
 }
 
 .MainPageBanner
@@ -91,7 +91,7 @@ nav img
     color: var(--primary-200);
     margin-left: 50px;
     font-family: "Pricedown";
-    width: 500px;
+    width: clamp(120px, 30vw, 500px);
     background: none;
 
     font-size: 30px;
@@ -108,4 +108,625 @@ nav img
 {
     border-bottom: solid 5px var(--primary-400);
     color: var(--primary-400);
+}
+
+nav
+{
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.nav-buttons
+{
+    flex: 1;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 900px)
+{
+    .nav-buttons button
+    {
+        font-size: 22px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+    .nav-buttons input
+    {
+        font-size: 22px;
+        margin-left: 20px;
+    }
+
+    nav img
+    {
+        width: 150px;
+        margin-right: 20px;
+    }
+}
+
+@media (max-width: 600px)
+{
+    .nav-buttons
+    {
+        margin-left: 10px;
+        gap: 4px;
+    }
+
+    .nav-buttons button
+    {
+        font-size: 16px;
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+
+    .nav-buttons input
+    {
+        font-size: 16px;
+        margin-left: 10px;
+        border-bottom-width: 3px;
+    }
+
+    nav img
+    {
+        width: 110px;
+        margin-right: 10px;
+    }
+}
+
+/* ── Account Page ── */
+
+.account-page
+{
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+.account-container
+{
+    background-color: var(--primary-400);
+    border: 3px solid var(--primary-200);
+    padding: 50px 60px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.account-heading
+{
+    font-size: 52px;
+    color: var(--primary-100);
+    text-align: center;
+    margin: 0 0 36px 0;
+    letter-spacing: 2px;
+}
+
+.account-tabs
+{
+    display: flex;
+    margin-bottom: 40px;
+    border-bottom: 3px solid var(--primary-300);
+}
+
+.account-tab
+{
+    flex: 1;
+    background: none;
+    font-size: 24px;
+    color: var(--primary-200);
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 5px solid transparent;
+    margin-bottom: -3px;
+    transition: 0.1s linear;
+}
+
+.account-tab.active
+{
+    color: var(--primary-100);
+    border-bottom: 5px solid var(--primary-100);
+}
+
+.account-tab:hover:not(.active)
+{
+    color: var(--primary-100);
+    border-bottom: 5px solid var(--primary-300);
+}
+
+.account-form
+{
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.account-form.hidden
+{
+    display: none;
+}
+
+.form-group
+{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label
+{
+    font-size: 20px;
+    color: var(--primary-200);
+}
+
+.form-group input
+{
+    background: none;
+    border: none;
+    border-bottom: 3px solid var(--primary-200);
+    color: var(--primary-100);
+    font-family: "Pricedown";
+    font-size: 22px;
+    padding: 6px 0;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+    transition: border-color 0.1s linear;
+}
+
+.form-group input::placeholder
+{
+    color: var(--primary-300);
+}
+
+.form-group input:focus
+{
+    border-bottom-color: var(--primary-100);
+}
+
+.form-submit
+{
+    width: 100%;
+    background-color: var(--primary-300);
+    color: var(--primary-100);
+    font-size: 28px;
+    padding: 14px;
+    margin-top: 6px;
+    cursor: pointer;
+    border: 3px solid var(--primary-200);
+    letter-spacing: 1px;
+    transition: 0.1s linear;
+}
+
+.form-submit:hover
+{
+    background-color: var(--primary-200);
+    color: var(--primary-500);
+    border-color: var(--primary-100);
+}
+
+.form-section-label
+{
+    font-size: 18px;
+    color: var(--primary-200);
+    border-bottom: 2px solid var(--primary-300);
+    padding-bottom: 4px;
+    letter-spacing: 1px;
+}
+
+.form-row
+{
+    display: flex;
+    gap: 16px;
+}
+
+.form-row .form-group
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.form-row .form-group-sm
+{
+    flex: 0 0 90px;
+    min-width: 0;
+}
+
+.form-hint
+{
+    font-family: sans-serif;
+    font-size: 12px;
+    color: var(--primary-300);
+    margin-top: 4px;
+}
+
+.form-optional
+{
+    font-family: sans-serif;
+    font-size: 13px;
+    color: var(--primary-300);
+}
+
+.form-error
+{
+    font-family: sans-serif;
+    font-size: 14px;
+    color: var(--secondary2-100);
+    background-color: var(--secondary2-500);
+    border: 2px solid var(--secondary2-300);
+    padding: 10px 14px;
+    text-align: center;
+}
+
+.form-error.hidden
+{
+    display: none;
+}
+
+@media (max-width: 600px)
+{
+    .account-container
+    {
+        padding: 36px 28px;
+    }
+
+    .account-heading
+    {
+        font-size: 38px;
+    }
+
+    .account-tab
+    {
+        font-size: 18px;
+    }
+
+    .form-row
+    {
+        flex-direction: column;
+        gap: 28px;
+    }
+
+    .form-row .form-group-sm
+    {
+        flex: 1;
+    }
+}
+
+/* ── Listing Toolbar ── */
+
+.listing-toolbar
+{
+    padding: 16px 50px;
+    display: flex;
+    align-items: center;
+    background-color: var(--primary-400);
+    border-bottom: 3px solid var(--primary-300);
+}
+
+.filter-btn
+{
+    background: none;
+    color: var(--primary-200);
+    font-size: 24px;
+    border: 3px solid var(--primary-200);
+    padding: 8px 28px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: 0.1s linear;
+}
+
+.filter-btn:hover
+{
+    background-color: var(--primary-200);
+    color: var(--primary-500);
+}
+
+/* ── Filter Panel ── */
+
+.filter-panel
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100vh;
+    background-color: var(--primary-500);
+    border-right: 3px solid var(--primary-200);
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 200;
+    box-sizing: border-box;
+}
+
+.filter-panel.open
+{
+    transform: translateX(0);
+}
+
+.filter-header
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background-color: var(--primary-400);
+    border-bottom: 3px solid var(--primary-300);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.filter-title
+{
+    font-size: 28px;
+    color: var(--primary-100);
+    letter-spacing: 1px;
+}
+
+.filter-close
+{
+    background: none;
+    color: var(--primary-200);
+    font-family: sans-serif;
+    font-size: 20px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: color 0.1s linear;
+}
+
+.filter-close:hover
+{
+    color: var(--primary-100);
+}
+
+.filter-body
+{
+    padding: 10px 20px 36px;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-section
+{
+    border-bottom: 2px solid var(--primary-400);
+    padding: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-section:last-child
+{
+    border-bottom: none;
+}
+
+.filter-section-title
+{
+    font-size: 18px;
+    color: var(--primary-100);
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.filter-subtitle
+{
+    font-family: sans-serif;
+    font-size: 12px;
+    color: var(--primary-300);
+}
+
+.filter-range-row
+{
+    display: flex;
+    gap: 12px;
+}
+
+.filter-range-row .filter-field
+{
+    flex: 1;
+    min-width: 0;
+}
+
+.filter-field
+{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.filter-field label
+{
+    font-size: 14px;
+    color: var(--primary-200);
+}
+
+.filter-input
+{
+    background: none;
+    border: none;
+    border-bottom: 2px solid var(--primary-300);
+    color: var(--primary-100);
+    font-family: "Pricedown";
+    font-size: 18px;
+    padding: 4px 0;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+    transition: border-color 0.1s linear;
+}
+
+.filter-input::placeholder
+{
+    color: var(--primary-400);
+}
+
+.filter-input:focus
+{
+    border-bottom-color: var(--primary-100);
+}
+
+.filter-input[type="number"]::-webkit-inner-spin-button,
+.filter-input[type="number"]::-webkit-outer-spin-button
+{
+    -webkit-appearance: none;
+}
+
+.filter-check
+{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    color: var(--primary-200);
+    cursor: pointer;
+    transition: color 0.1s linear;
+}
+
+.filter-check:hover
+{
+    color: var(--primary-100);
+}
+
+.filter-check input[type="checkbox"]
+{
+    accent-color: var(--primary-200);
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.filter-check-grid
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px 4px;
+}
+
+.filter-stepper
+{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stepper-btn
+{
+    background: none;
+    color: var(--primary-200);
+    border: 2px solid var(--primary-300);
+    width: 28px;
+    height: 28px;
+    font-family: sans-serif;
+    font-size: 18px;
+    line-height: 1;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: 0.1s linear;
+}
+
+.stepper-btn:hover
+{
+    background-color: var(--primary-300);
+    color: var(--primary-100);
+    border-color: var(--primary-200);
+}
+
+.stepper-input
+{
+    flex: 1;
+    background: none;
+    border: none;
+    border-bottom: 2px solid var(--primary-300);
+    color: var(--primary-100);
+    font-family: "Pricedown";
+    font-size: 18px;
+    padding: 4px 0;
+    outline: none;
+    text-align: center;
+    min-width: 0;
+    box-sizing: border-box;
+    transition: border-color 0.1s linear;
+}
+
+.stepper-input:focus
+{
+    border-bottom-color: var(--primary-100);
+}
+
+.stepper-input::-webkit-inner-spin-button,
+.stepper-input::-webkit-outer-spin-button
+{
+    -webkit-appearance: none;
+}
+
+.filter-actions
+{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 16px;
+}
+
+.filter-apply
+{
+    width: 100%;
+    background-color: var(--primary-300);
+    color: var(--primary-100);
+    font-size: 22px;
+    padding: 12px;
+    cursor: pointer;
+    border: 3px solid var(--primary-200);
+    letter-spacing: 1px;
+    transition: 0.1s linear;
+}
+
+.filter-apply:hover
+{
+    background-color: var(--primary-200);
+    color: var(--primary-500);
+}
+
+.filter-clear
+{
+    width: 100%;
+    background: none;
+    color: var(--primary-300);
+    font-size: 18px;
+    padding: 8px;
+    cursor: pointer;
+    border: 2px solid var(--primary-400);
+    transition: 0.1s linear;
+}
+
+.filter-clear:hover
+{
+    color: var(--primary-200);
+    border-color: var(--primary-300);
+}
+
+@media (max-width: 700px)
+{
+    .filter-btn
+    {
+        font-size: 18px;
+        padding: 6px 16px;
+    }
+}
+
+@media (max-width: 480px)
+{
+    .filter-btn
+    {
+        display: none;
+    }
+
+    .filter-panel
+    {
+        display: none;
+    }
 }

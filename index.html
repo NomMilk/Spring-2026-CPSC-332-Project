@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GrandTheftDeals</title>
-    <!-- Link to an external CSS file -->
     <link rel="stylesheet" href="css/global.css">
 </head>
 
@@ -27,7 +26,284 @@
     </nav>
     </header>
 
-    <div class="MainPageBanner">
+    <!-- Filter button sits directly below the nav / Home button -->
+    <div class="listing-toolbar">
+        <button class="filter-btn" onclick="toggleFilter()">&#9776; Filter</button>
     </div>
+
+    <div class="MainPageBanner"></div>
+
+    <!-- ── Filter Panel ── -->
+    <aside id="filter-panel" class="filter-panel" aria-label="Filter Vehicles">
+
+        <div class="filter-header">
+            <span class="filter-title">Filter</span>
+            <button class="filter-close" onclick="toggleFilter()" aria-label="Close">&#10005;</button>
+        </div>
+
+        <div class="filter-body">
+
+            <!-- Brand -->
+            <div class="filter-section">
+                <div class="filter-section-title">Brand</div>
+                <div class="filter-check-grid">
+                    <label class="filter-check"><input type="checkbox"> Toyota</label>
+                    <label class="filter-check"><input type="checkbox"> Honda</label>
+                    <label class="filter-check"><input type="checkbox"> Ford</label>
+                    <label class="filter-check"><input type="checkbox"> Chevrolet</label>
+                    <label class="filter-check"><input type="checkbox"> BMW</label>
+                    <label class="filter-check"><input type="checkbox"> Mercedes</label>
+                    <label class="filter-check"><input type="checkbox"> Audi</label>
+                    <label class="filter-check"><input type="checkbox"> Nissan</label>
+                    <label class="filter-check"><input type="checkbox"> Hyundai</label>
+                    <label class="filter-check"><input type="checkbox"> Kia</label>
+                    <label class="filter-check"><input type="checkbox"> Volkswagen</label>
+                    <label class="filter-check"><input type="checkbox"> Subaru</label>
+                    <label class="filter-check"><input type="checkbox"> Mazda</label>
+                    <label class="filter-check"><input type="checkbox"> Jeep</label>
+                    <label class="filter-check"><input type="checkbox"> Dodge</label>
+                    <label class="filter-check"><input type="checkbox"> Ram</label>
+                    <label class="filter-check"><input type="checkbox"> Lexus</label>
+                    <label class="filter-check"><input type="checkbox"> Acura</label>
+                    <label class="filter-check"><input type="checkbox"> GMC</label>
+                    <label class="filter-check"><input type="checkbox"> Cadillac</label>
+                    <label class="filter-check"><input type="checkbox"> Volvo</label>
+                    <label class="filter-check"><input type="checkbox"> Porsche</label>
+                    <label class="filter-check"><input type="checkbox"> Tesla</label>
+                    <label class="filter-check"><input type="checkbox"> Infiniti</label>
+                </div>
+            </div>
+
+            <!-- Model -->
+            <div class="filter-section">
+                <div class="filter-section-title">Model</div>
+                <div class="filter-field">
+                    <input type="text" class="filter-input" placeholder="e.g. Mustang">
+                </div>
+            </div>
+
+            <!-- Year -->
+            <div class="filter-section">
+                <div class="filter-section-title">Year</div>
+                <div class="filter-field">
+                    <label>Min</label>
+                    <div class="filter-stepper">
+                        <button class="stepper-btn" onclick="stepValue('year-min', -1)">&#8722;</button>
+                        <input id="year-min" type="number" class="stepper-input" min="1900" max="2026" step="1">
+                        <button class="stepper-btn" onclick="stepValue('year-min', 1)">+</button>
+                    </div>
+                </div>
+                <div class="filter-field">
+                    <label>Max</label>
+                    <div class="filter-stepper">
+                        <button class="stepper-btn" onclick="stepValue('year-max', -1)">&#8722;</button>
+                        <input id="year-max" type="number" class="stepper-input" min="1900" max="2026" step="1">
+                        <button class="stepper-btn" onclick="stepValue('year-max', 1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price -->
+            <div class="filter-section">
+                <div class="filter-section-title">Price ($)</div>
+                <div class="filter-field">
+                    <label>Min</label>
+                    <div class="filter-stepper">
+                        <button class="stepper-btn" onclick="stepValue('price-min', -1)">&#8722;</button>
+                        <input id="price-min" type="number" class="stepper-input" min="0" step="500">
+                        <button class="stepper-btn" onclick="stepValue('price-min', 1)">+</button>
+                    </div>
+                </div>
+                <div class="filter-field">
+                    <label>Max</label>
+                    <div class="filter-stepper">
+                        <button class="stepper-btn" onclick="stepValue('price-max', -1)">&#8722;</button>
+                        <input id="price-max" type="number" class="stepper-input" min="0" step="500">
+                        <button class="stepper-btn" onclick="stepValue('price-max', 1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mileage -->
+            <div class="filter-section">
+                <div class="filter-section-title">Mileage</div>
+                <div class="filter-field">
+                    <label>Max</label>
+                    <div class="filter-stepper">
+                        <button class="stepper-btn" onclick="stepValue('mileage-max', -1)">&#8722;</button>
+                        <input id="mileage-max" type="number" class="stepper-input" min="0" step="1000">
+                        <button class="stepper-btn" onclick="stepValue('mileage-max', 1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exterior Color -->
+            <div class="filter-section">
+                <div class="filter-section-title">Exterior Color</div>
+                <div class="filter-check-grid">
+                    <label class="filter-check"><input type="checkbox"> White</label>
+                    <label class="filter-check"><input type="checkbox"> Black</label>
+                    <label class="filter-check"><input type="checkbox"> Silver</label>
+                    <label class="filter-check"><input type="checkbox"> Gray</label>
+                    <label class="filter-check"><input type="checkbox"> Red</label>
+                    <label class="filter-check"><input type="checkbox"> Blue</label>
+                    <label class="filter-check"><input type="checkbox"> Navy</label>
+                    <label class="filter-check"><input type="checkbox"> Green</label>
+                    <label class="filter-check"><input type="checkbox"> Brown</label>
+                    <label class="filter-check"><input type="checkbox"> Orange</label>
+                    <label class="filter-check"><input type="checkbox"> Yellow</label>
+                    <label class="filter-check"><input type="checkbox"> Beige</label>
+                </div>
+            </div>
+
+            <!-- Interior Color -->
+            <div class="filter-section">
+                <div class="filter-section-title">Interior Color</div>
+                <div class="filter-check-grid">
+                    <label class="filter-check"><input type="checkbox"> Black</label>
+                    <label class="filter-check"><input type="checkbox"> Beige</label>
+                    <label class="filter-check"><input type="checkbox"> Gray</label>
+                    <label class="filter-check"><input type="checkbox"> Brown</label>
+                    <label class="filter-check"><input type="checkbox"> Tan</label>
+                    <label class="filter-check"><input type="checkbox"> Red</label>
+                    <label class="filter-check"><input type="checkbox"> White</label>
+                    <label class="filter-check"><input type="checkbox"> Navy</label>
+                </div>
+            </div>
+
+            <!-- Seating -->
+            <div class="filter-section">
+                <div class="filter-section-title">Seating Capacity</div>
+                <div class="filter-field">
+                    <label>Min Seats</label>
+                    <input type="number" class="filter-input" placeholder="e.g. 5" min="1" max="15">
+                </div>
+            </div>
+
+            <!-- Condition -->
+            <div class="filter-section">
+                <div class="filter-section-title">Condition</div>
+                <label class="filter-check"><input type="checkbox"> Certified Pre-Owned</label>
+                <label class="filter-check"><input type="checkbox"> No Accidents</label>
+                <label class="filter-check"><input type="checkbox"> Clean Title</label>
+                <label class="filter-check"><input type="checkbox"> One Owner</label>
+            </div>
+
+            <!-- Body Style -->
+            <div class="filter-section">
+                <div class="filter-section-title">Body Style</div>
+                <label class="filter-check"><input type="checkbox"> Sedan</label>
+                <label class="filter-check"><input type="checkbox"> SUV</label>
+                <label class="filter-check"><input type="checkbox"> Truck</label>
+                <label class="filter-check"><input type="checkbox"> Van</label>
+                <label class="filter-check"><input type="checkbox"> Coupe</label>
+                <label class="filter-check"><input type="checkbox"> Hatchback</label>
+            </div>
+
+            <!-- Fuel Type -->
+            <div class="filter-section">
+                <div class="filter-section-title">Fuel Type</div>
+                <label class="filter-check"><input type="checkbox"> EV</label>
+                <label class="filter-check"><input type="checkbox"> PHEV</label>
+                <label class="filter-check"><input type="checkbox"> Hybrid</label>
+                <label class="filter-check"><input type="checkbox"> Gas</label>
+                <label class="filter-check"><input type="checkbox"> Diesel</label>
+                <label class="filter-check"><input type="checkbox"> Hydrogen</label>
+            </div>
+
+            <!-- Transmission -->
+            <div class="filter-section">
+                <div class="filter-section-title">Transmission</div>
+                <label class="filter-check"><input type="checkbox"> Automatic</label>
+                <label class="filter-check"><input type="checkbox"> CVT</label>
+                <label class="filter-check"><input type="checkbox"> Manual</label>
+            </div>
+
+            <!-- Drivetrain -->
+            <div class="filter-section">
+                <div class="filter-section-title">Drivetrain</div>
+                <label class="filter-check"><input type="checkbox"> 4WD</label>
+                <label class="filter-check"><input type="checkbox"> AWD</label>
+                <label class="filter-check"><input type="checkbox"> FWD</label>
+                <label class="filter-check"><input type="checkbox"> RWD</label>
+            </div>
+
+            <!-- MPG -->
+            <div class="filter-section">
+                <div class="filter-section-title">
+                    MPG <span class="filter-subtitle">Gas / Hybrid</span>
+                </div>
+                <div class="filter-field">
+                    <label>Min MPG</label>
+                    <input type="number" class="filter-input" placeholder="e.g. 25" min="1">
+                </div>
+            </div>
+
+            <!-- EV Range -->
+            <div class="filter-section">
+                <div class="filter-section-title">
+                    Range <span class="filter-subtitle">Electric</span>
+                </div>
+                <div class="filter-field">
+                    <label>Min Range (mi)</label>
+                    <input type="number" class="filter-input" placeholder="e.g. 200" min="1">
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="filter-section">
+                <div class="filter-section-title">Features</div>
+                <label class="filter-check"><input type="checkbox"> Backup Camera</label>
+                <label class="filter-check"><input type="checkbox"> Navigation</label>
+                <label class="filter-check"><input type="checkbox"> Moonroof</label>
+                <label class="filter-check"><input type="checkbox"> Parking Sensors</label>
+                <label class="filter-check"><input type="checkbox"> Third Row Seating</label>
+                <label class="filter-check"><input type="checkbox"> Tow Hitch</label>
+            </div>
+
+            <!-- Actions -->
+            <div class="filter-actions">
+                <button class="filter-apply" onclick="applyFilters()">Apply Filters</button>
+                <button class="filter-clear" onclick="clearFilters()">Clear All</button>
+            </div>
+
+        </div>
+    </aside>
+
+    <script>
+        function toggleFilter() {
+            document.getElementById('filter-panel').classList.toggle('open');
+        }
+
+        function stepValue(id, direction) {
+            const input = document.getElementById(id);
+            const step  = parseFloat(input.step)  || 1;
+            const min   = input.min !== '' ? parseFloat(input.min) : 0;
+            const max   = input.max !== '' ? parseFloat(input.max) : Infinity;
+            let current = parseFloat(input.value);
+            if (isNaN(current)) current = direction > 0 ? min : max;
+            else current = Math.min(max, Math.max(min, current + direction * step));
+            input.value = current;
+        }
+
+        window.addEventListener('resize', function () {
+            if (window.innerWidth <= 480) {
+                document.getElementById('filter-panel').classList.remove('open');
+            }
+        });
+
+        function applyFilters() {
+            // TODO: connect to backend filtering
+            toggleFilter();
+        }
+
+        function clearFilters() {
+            const panel = document.getElementById('filter-panel');
+            panel.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            panel.querySelectorAll('input[type="text"]').forEach(inp => inp.value = '');
+            panel.querySelectorAll('.stepper-input, .filter-input[type="number"]').forEach(inp => inp.value = '');
+        }
+    </script>
+
 </body>
 </html>
