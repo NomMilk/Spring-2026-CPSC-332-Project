@@ -65,7 +65,7 @@ $sql = "
     LEFT JOIN Drivetrain  dt ON v.drivetrain_id     = dt.drivetrain_id
     LEFT JOIN Transmission tr ON v.transmission_id  = tr.transmission_id
     LEFT JOIN Fuel_Type   ft ON v.fuel_type_id      = ft.fuel_type_id
-    LEFT JOIN Store        s ON v.at_store_id        = s.store_id
+    LEFT JOIN Store        s ON v.store_id             = s.store_id
     LEFT JOIN Address      a ON s.address_id         = a.address_id
     WHERE 1=1
 ";
@@ -180,7 +180,7 @@ if (!empty($conditions)) {
     $placeholders = implode(',', array_fill(0, count($conditions), '?'));
     $sql .= " AND v.vin IN (
         SELECT vc.vin FROM Vehicle_Condition vc
-        JOIN `Condition` c ON vc.condition_id = c.condition_id
+        JOIN Vehicle_Condition_Type c ON vc.condition_id = c.condition_id
         WHERE c.condition_name IN ($placeholders)
     )";
     $params = array_merge($params, $conditions);
@@ -213,7 +213,7 @@ try {
         // Conditions
         $cStmt = $pdo->prepare("
             SELECT c.condition_name FROM Vehicle_Condition vc
-            JOIN `Condition` c ON vc.condition_id = c.condition_id
+            JOIN Vehicle_Condition_Type c ON vc.condition_id = c.condition_id
             WHERE vc.vin = ?
         ");
         $cStmt->execute([$vin]);
