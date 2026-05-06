@@ -85,9 +85,11 @@ CREATE TABLE User (
 CREATE TABLE Store (
 	store_id INT AUTO_INCREMENT PRIMARY KEY,
 	manager_id INT,
+	address_id INT,
 	name VARCHAR(100),
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	FOREIGN KEY (manager_id) REFERENCES User(user_id)
+	FOREIGN KEY (manager_id) REFERENCES User(user_id),
+	FOREIGN KEY (address_id) REFERENCES Address(address_id)
 );
 
 CREATE TABLE Staff (
