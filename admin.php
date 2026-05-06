@@ -89,7 +89,7 @@ if ($action === 'add') {
                 vin, body_style_id, drivetrain_id, transmission_id, fuel_type_id,
                 brand, model, year, mileage, price,
                 interior_color, exterior_color, seating_capacity,
-                mpg_city, mpg_highway, ev_range, store_id
+                mpg_city, mpg_highway, ev_range, at_store_id
             ) VALUES (?,?,?,?,?, ?,?,?,?,?, ?,?,?, ?,?,?,?)
         ")->execute([
             $vin,

@@ -117,17 +117,17 @@ INSERT INTO Staff (user_id, store_id, role_id) VALUES
 -- transmission_id: 1=Automatic,2=CVT,3=Manual
 -- fuel_type_id: 1=EV,2=PHEV,3=Hybrid,4=Gas,5=Diesel,6=Hydrogen
 
-INSERT INTO Vehicle (vin, body_style_id, drivetrain_id, transmission_id, fuel_type_id, brand, model, year, mileage, price, interior_color, exterior_color, seating_capacity, mpg_city, mpg_highway, ev_range) VALUES
-('1HGBH41JXMN109186', 1, 3, 1, 4,  'Toyota',   'Camry',        2022, 24000,  22500.00, 'Black',  'White',  5,  28, 39, NULL),
-('2T1BURHE0JC037370', 6, 3, 2, 3,  'Honda',    'Civic',        2023, 11000,  24999.00, 'Gray',   'Silver', 5,  40, 50, NULL),
-('1C4RJFBG5FC625797', 2, 2, 1, 4,  'Jeep',     'Grand Cherokee',2021,38000,  34500.00, 'Black',  'Black',  5,  19, 26, NULL),
-('3VWFE21C04M000001', 2, 2, 1, 2,  'Ford',     'Escape',       2022, 29000,  27800.00, 'Beige',  'Blue',   5,  38, 43, NULL),
-('5YJSA1E26MF123456', 1, 2, 1, 1,  'Tesla',    'Model 3',      2023,  8000,  41000.00, 'White',  'Red',    5,  NULL, NULL, 358),
-('1FTFW1ET5DFC10312', 3, 1, 1, 4,  'Ford',     'F-150',        2020, 52000,  38000.00, 'Gray',   'Gray',   6,  20, 26, NULL),
-('WAUZZZ8V9BA123456', 1, 4, 3, 4,  'BMW',      '3 Series',     2021, 31000,  36500.00, 'Beige',  'Navy',   5,  26, 36, NULL),
-('1N4AL3AP8JC123456', 2, 2, 1, 3,  'Toyota',   'RAV4 Hybrid',  2023,  5000,  38900.00, 'Black',  'Green',  5,  41, 38, NULL),
-('2HKRM4H77GH123456', 2, 3, 2, 3,  'Honda',    'CR-V',         2022, 19000,  29500.00, 'Tan',    'White',  5,  28, 34, NULL),
-('1G1ZD5ST8JF123456', 5, 4, 3, 4,  'Chevrolet','Camaro',       2020, 44000,  31000.00, 'Black',  'Yellow', 4,  16, 24, NULL);
+INSERT INTO Vehicle (vin, body_style_id, drivetrain_id, transmission_id, fuel_type_id, at_store_id, brand, model, year, mileage, price, interior_color, exterior_color, seating_capacity, mpg_city, mpg_highway, ev_range) VALUES
+('1HGBH41JXMN109186', 1, 3, 1, 4, 1, 'Toyota',   'Camry',        2022, 24000,  22500.00, 'Black',  'White',  5,  28, 39, NULL),
+('2T1BURHE0JC037370', 6, 3, 2, 3, 1, 'Honda',    'Civic',        2023, 11000,  24999.00, 'Gray',   'Silver', 5,  40, 50, NULL),
+('1C4RJFBG5FC625797', 2, 2, 1, 4, 2, 'Jeep',     'Grand Cherokee',2021,38000,  34500.00, 'Black',  'Black',  5,  19, 26, NULL),
+('3VWFE21C04M000001', 2, 2, 1, 2, 2, 'Ford',     'Escape',       2022, 29000,  27800.00, 'Beige',  'Blue',   5,  38, 43, NULL),
+('5YJSA1E26MF123456', 1, 2, 1, 1, 1, 'Tesla',    'Model 3',      2023,  8000,  41000.00, 'White',  'Red',    5,  NULL, NULL, 358),
+('1FTFW1ET5DFC10312', 3, 1, 1, 4, 3, 'Ford',     'F-150',        2020, 52000,  38000.00, 'Gray',   'Gray',   6,  20, 26, NULL),
+('WAUZZZ8V9BA123456', 1, 4, 3, 4, 3, 'BMW',      '3 Series',     2021, 31000,  36500.00, 'Beige',  'Navy',   5,  26, 36, NULL),
+('1N4AL3AP8JC123456', 2, 2, 1, 3, 2, 'Toyota',   'RAV4 Hybrid',  2023,  5000,  38900.00, 'Black',  'Green',  5,  41, 38, NULL),
+('2HKRM4H77GH123456', 2, 3, 2, 3, 2, 'Honda',    'CR-V',         2022, 19000,  29500.00, 'Tan',    'White',  5,  28, 34, NULL),
+('1G1ZD5ST8JF123456', 5, 4, 3, 4, 3, 'Chevrolet','Camaro',       2020, 44000,  31000.00, 'Black',  'Yellow', 4,  16, 24, NULL);
 
 -- ============================
 -- VEHICLE CONDITIONS

@@ -2,6 +2,7 @@
 {
     /* Primary colors */
     --primary-100: #FFC2AA;
+    --primary-150: #FFD2BF;
     --primary-200: #D4886A;
     --primary-300: #AA5939;
     --primary-400: #803315;
@@ -62,7 +63,7 @@ nav img
 .MainPageBanner
 {
     width: 100%;
-    height: 1000px;
+    height: 320px;
     margin: 0 auto;
     overflow-x: hidden;
 
@@ -86,7 +87,7 @@ nav img
 {
     background: none;
     border-bottom: 5px solid transparent;
-    color: var(--primary-200);
+    color: var(--primary-150);
 
     font-size: 30px;
     margin-left: 20px;
@@ -97,7 +98,7 @@ nav img
 
 .nav-buttons input
 {
-    color: var(--primary-200);
+    color: var(--primary-150);
     margin-left: 50px;
     font-family: "Pricedown";
     width: clamp(120px, 30vw, 500px);
@@ -105,12 +106,12 @@ nav img
 
     font-size: 30px;
     border: none;
-    border-bottom: 5px solid var(--primary-200);
+    border-bottom: 5px solid var(--primary-150);
     outline: none;
 }
 
 .nav-buttons input::placeholder {
-    color: var(--primary-200);
+    color: var(--primary-150);
 }
 
 .nav-buttons button:hover
@@ -433,9 +434,9 @@ nav
 .filter-btn
 {
     background: none;
-    color: var(--primary-200);
+    color: var(--primary-150);
     font-size: 24px;
-    border: 3px solid var(--primary-200);
+    border: 3px solid var(--primary-150);
     padding: 8px 28px;
     cursor: pointer;
     letter-spacing: 1px;
