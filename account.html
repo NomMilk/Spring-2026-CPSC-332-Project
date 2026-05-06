@@ -126,7 +126,8 @@
                     <input id="create-confirm" type="password" placeholder="Confirm your password..." required>
                 </div>
 
-                <div id="create-error" class="form-error hidden"></div>
+                <div id="create-error"   class="form-error   hidden"></div>
+                <div id="create-success" class="form-success hidden"></div>
                 <button type="submit" class="form-submit">Create Account</button>
             </form>
 
@@ -171,31 +172,68 @@
             document.getElementById(id).classList.add('hidden');
         }
 
+        function showSuccess(id, message) {
+            const el = document.getElementById(id);
+            el.textContent = message;
+            el.classList.remove('hidden');
+        }
+
+        function clearSuccess(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
         function handleSignIn(event) {
             event.preventDefault();
             clearError('signin-error');
             // TODO: connect to backend authentication
         }
 
-        function handleCreate(event) {
+        async function handleCreate(event) {
             event.preventDefault();
             clearError('create-error');
+            clearSuccess('create-success');
 
             const password = document.getElementById('create-password').value;
             const confirm  = document.getElementById('create-confirm').value;
 
             const pwError = validatePassword(password);
-            if (pwError) {
-                showError('create-error', pwError);
-                return;
-            }
+            if (pwError) { showError('create-error', pwError); return; }
 
             if (password !== confirm) {
                 showError('create-error', 'Passwords do not match.');
                 return;
             }
 
-            // TODO: connect to backend registration
+            const btn = event.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+
+            const body = new FormData();
+            body.append('fname',         document.getElementById('create-firstname').value.trim());
+            body.append('lname',         document.getElementById('create-lastname').value.trim());
+            body.append('phone',         document.getElementById('create-phone').value.trim());
+            body.append('email',         document.getElementById('create-email').value.trim());
+            body.append('street_number', document.getElementById('create-street-num').value.trim());
+            body.append('street_name',   document.getElementById('create-street-name').value.trim());
+            body.append('apt_number',    document.getElementById('create-apt').value.trim());
+            body.append('city',          document.getElementById('create-city').value.trim());
+            body.append('state',         document.getElementById('create-state').value.trim());
+            body.append('zip',           document.getElementById('create-zip').value.trim());
+            body.append('password',      password);
+
+            try {
+                const res  = await fetch('register.php', { method: 'POST', body });
+                const data = await res.json();
+                if (data.error) {
+                    showError('create-error', data.error);
+                } else {
+                    event.target.reset();
+                    showSuccess('create-success', 'Account created! You can now sign in.');
+                }
+            } catch {
+                showError('create-error', 'Could not reach the server. Please try again.');
+            } finally {
+                btn.disabled = false;
+            }
         }
     </script>
 
