@@ -14,7 +14,7 @@ CREATE TABLE Feature (
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `Condition` (
+CREATE TABLE Vehicle_Condition_Type (
 	condition_id INT AUTO_INCREMENT PRIMARY KEY,
 	condition_name VARCHAR(50) NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -113,7 +113,7 @@ CREATE TABLE Vehicle (
 	drivetrain_id INT,
 	transmission_id INT,
 	fuel_type_id INT,
-	at_store_id INT,
+	store_id INT,
 	brand VARCHAR(50),
 	model VARCHAR(50),
 	year INT,
@@ -130,7 +130,7 @@ CREATE TABLE Vehicle (
 	FOREIGN KEY (drivetrain_id) REFERENCES Drivetrain(drivetrain_id),
 	FOREIGN KEY (transmission_id) REFERENCES Transmission(transmission_id),
 	FOREIGN KEY (fuel_type_id) REFERENCES Fuel_Type(fuel_type_id),
-	FOREIGN KEY (at_store_id) REFERENCES Store(store_id)
+	FOREIGN KEY (store_id) REFERENCES Store(store_id)
 );
 
 -- ============================
@@ -150,7 +150,7 @@ CREATE TABLE Vehicle_Condition (
 	condition_id INT,
 	PRIMARY KEY (vin, condition_id),
 	FOREIGN KEY (vin) REFERENCES Vehicle(vin),
-	FOREIGN KEY (condition_id) REFERENCES `Condition`(condition_id)
+	FOREIGN KEY (condition_id) REFERENCES Vehicle_Condition_Type(condition_id)
 );
 
 -- ============================
