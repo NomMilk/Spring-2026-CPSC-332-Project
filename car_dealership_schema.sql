@@ -113,6 +113,7 @@ CREATE TABLE Vehicle (
 	drivetrain_id INT,
 	transmission_id INT,
 	fuel_type_id INT,
+	at_store_id INT,
 	brand VARCHAR(50),
 	model VARCHAR(50),
 	year INT,
@@ -128,7 +129,8 @@ CREATE TABLE Vehicle (
 	FOREIGN KEY (body_style_id) REFERENCES Body_Style(body_style_id),
 	FOREIGN KEY (drivetrain_id) REFERENCES Drivetrain(drivetrain_id),
 	FOREIGN KEY (transmission_id) REFERENCES Transmission(transmission_id),
-	FOREIGN KEY (fuel_type_id) REFERENCES Fuel_Type(fuel_type_id)
+	FOREIGN KEY (fuel_type_id) REFERENCES Fuel_Type(fuel_type_id),
+	FOREIGN KEY (at_store_id) REFERENCES Store(store_id)
 );
 
 -- ============================
