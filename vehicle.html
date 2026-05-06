@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Details — GrandTheftDeals</title>
+    <link rel="stylesheet" href="css/global.css">
+    <style>
+        .vd-page
+        {
+            background-color: var(--primary-500);
+            min-height: calc(100vh - 80px);
+        }
+
+        .vd-wrapper
+        {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 40px 64px;
+        }
+
+        .vd-back
+        {
+            display: inline-block;
+            font-family: sans-serif;
+            font-size: 13px;
+            color: var(--primary-300);
+            text-decoration: none;
+            margin-bottom: 28px;
+            transition: color 0.1s linear;
+        }
+
+        .vd-back:hover { color: var(--primary-100); }
+
+        /* ── Two-column layout ── */
+
+        .vd-layout
+        {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* ── Image ── */
+
+        .vd-img
+        {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background-color: var(--primary-400);
+            border: 1px solid var(--primary-300);
+            border-radius: 6px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .vd-img img
+        {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            align-self: stretch;
+        }
+
+        .vd-img span
+        {
+            font-family: sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary-300);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* ── Info panel ── */
+
+        .vd-title
+        {
+            font-size: 30px;
+            color: var(--primary-100);
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+
+        .vd-price
+        {
+            font-size: 34px;
+            color: var(--secondary1-100);
+            margin-bottom: 6px;
+        }
+
+        .vd-vin
+        {
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--primary-400);
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Section label ── */
+
+        .vd-label
+        {
+            font-size: 12px;
+            color: var(--primary-200);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--primary-400);
+            padding-bottom: 5px;
+            margin: 22px 0 12px;
+        }
+
+        /* ── Specs grid ── */
+
+        .vd-specs
+        {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 20px;
+        }
+
+        .vd-spec-label
+        {
+            font-family: sans-serif;
+            font-size: 10px;
+            color: var(--primary-300);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .vd-spec-value
+        {
+            font-size: 16px;
+            color: var(--primary-100);
+        }
+
+        /* ── Condition badges — reuse .vehicle-badge from global.css ── */
+
+        .vd-badges
+        {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        /* ── Features list ── */
+
+        .vd-features
+        {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 16px;
+        }
+
+        .vd-features li
+        {
+            font-family: sans-serif;
+            font-size: 13px;
+            color: var(--primary-200);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .vd-features li::before
+        {
+            content: '✓';
+            color: var(--secondary1-200);
+            font-weight: 700;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        /* ── Store block ── */
+
+        .vd-store
+        {
+            background-color: var(--primary-400);
+            border: 1px solid var(--primary-300);
+            border-radius: 4px;
+            padding: 14px 18px;
+        }
+
+        .vd-store-name
+        {
+            font-size: 18px;
+            color: var(--primary-100);
+            margin-bottom: 4px;
+        }
+
+        .vd-store-addr
+        {
+            font-family: sans-serif;
+            font-size: 13px;
+            color: var(--primary-300);
+            line-height: 1.7;
+        }
+
+        /* ── None / muted fallback text ── */
+
+        .vd-none
+        {
+            font-family: sans-serif;
+            font-size: 13px;
+            color: var(--primary-400);
+        }
+
+        /* ── Status (loading / error) ── */
+
+        .vd-status
+        {
+            font-size: 20px;
+            color: var(--primary-300);
+            text-align: center;
+            padding: 80px 20px;
+            margin: 0;
+        }
+
+        /* ── Responsive ── */
+
+        @media (max-width: 768px)
+        {
+            .vd-wrapper  { padding: 24px 24px 52px; }
+            .vd-layout   { grid-template-columns: 1fr; gap: 24px; }
+            .vd-title    { font-size: 26px; }
+            .vd-price    { font-size: 28px; }
+        }
+
+        @media (max-width: 480px)
+        {
+            .vd-wrapper      { padding: 16px 16px 40px; }
+            .vd-specs        { grid-template-columns: 1fr; }
+            .vd-features     { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+    <nav>
+        <ul class="nav-buttons">
+            <li><a href="index.html"><button>Home</button></a></li>
+            <li><a href="account.html"><button>Account</button></a></li>
+            <li><a href="services.html"><button>Services</button></a></li>
+            <li><a href="contacts.html"><button>Contacts</button></a></li>
+        </ul>
+        <img src="images/GrandTheftDeals.png" alt="Grand Theft Deals" width="200">
+    </nav>
+    </header>
+
+    <div class="vd-page">
+        <div class="vd-wrapper">
+            <a class="vd-back" href="index.html">&#8592; Back to Listings</a>
+            <div id="vd-content">
+                <p class="vd-status">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function esc(s) {
+            return String(s ?? '')
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        const vin     = new URLSearchParams(window.location.search).get('vin');
+        const content = document.getElementById('vd-content');
+
+        if (!vin) {
+            content.innerHTML = '<p class="vd-status">No VIN specified.</p>';
+        } else {
+            fetch('get_vehicle.php?vin=' + encodeURIComponent(vin))
+                .then(r => r.json())
+                .then(data => {
+                    if (data.error) {
+                        content.innerHTML = '<p class="vd-status">' + esc(data.error) + '</p>';
+                        return;
+                    }
+                    render(data.vehicle);
+                })
+                .catch(() => {
+                    content.innerHTML = '<p class="vd-status">Could not load vehicle details.</p>';
+                });
+        }
+
+        function render(v) {
+            document.title = v.year + ' ' + v.brand + ' ' + v.model + ' — GrandTheftDeals';
+
+            const price   = v.price != null
+                ? '$' + Number(v.price).toLocaleString()
+                : 'Call for Price';
+            const mileage = v.mileage != null
+                ? Number(v.mileage).toLocaleString() + ' mi'
+                : '—';
+
+            const efficiency = (v.fuel_type === 'EV' && v.ev_range)
+                ? v.ev_range + ' mi range'
+                : (v.mpg_city && v.mpg_highway)
+                    ? v.mpg_city + ' city / ' + v.mpg_highway + ' hwy MPG'
+                    : '—';
+
+            const specs = [
+                { label: 'Body Style',   value: v.body_style          || '—' },
+                { label: 'Drivetrain',   value: v.drivetrain          || '—' },
+                { label: 'Transmission', value: v.transmission        || '—' },
+                { label: 'Fuel Type',    value: v.fuel_type           || '—' },
+                { label: 'Mileage',      value: mileage },
+                { label: 'Seating',      value: v.seating_capacity ? v.seating_capacity + ' seats' : '—' },
+                { label: 'Ext. Color',   value: v.exterior_color      || '—' },
+                { label: 'Int. Color',   value: v.interior_color      || '—' },
+                { label: 'Efficiency',   value: efficiency },
+            ];
+
+            const specsHtml = specs.map(s => `
+                <div>
+                    <div class="vd-spec-label">${esc(s.label)}</div>
+                    <div class="vd-spec-value">${esc(s.value)}</div>
+                </div>`).join('');
+
+            const condHtml = (v.conditions || []).length
+                ? v.conditions.map(c => `<span class="vehicle-badge">${esc(c)}</span>`).join('')
+                : '<span class="vd-none">None listed</span>';
+
+            const featHtml = (v.features || []).length
+                ? '<ul class="vd-features">' +
+                  v.features.map(f => `<li>${esc(f)}</li>`).join('') +
+                  '</ul>'
+                : '<p class="vd-none">None listed</p>';
+
+            let storeHtml = '';
+            if (v.store_name) {
+                const line1 = (v.store_street_number && v.store_street_name)
+                    ? esc(v.store_street_number) + ' ' + esc(v.store_street_name)
+                    : '';
+                const line2 = [v.store_city, v.store_state].filter(Boolean).join(', ')
+                    + (v.store_zip ? ' ' + v.store_zip : '');
+                const addrHtml = [line1, esc(line2)].filter(Boolean).join('<br>');
+                storeHtml = `
+                    <div class="vd-label">Dealership</div>
+                    <div class="vd-store">
+                        <div class="vd-store-name">${esc(v.store_name)}</div>
+                        ${addrHtml ? `<div class="vd-store-addr">${addrHtml}</div>` : ''}
+                    </div>`;
+            }
+
+            content.innerHTML = `
+                <div class="vd-layout">
+                    <div class="vd-img">
+                        <img src="${esc(v.image_url)}" alt="${esc(v.year + ' ' + v.brand + ' ' + v.model)}"
+                             onerror="this.style.display='none';this.nextElementSibling.style.display=''">
+                        <span style="display:none">No Image</span>
+                    </div>
+                    <div>
+                        <div class="vd-title">${esc(v.year)} ${esc(v.brand)} ${esc(v.model)}</div>
+                        <div class="vd-price">${esc(price)}</div>
+                        <div class="vd-vin">VIN: ${esc(v.vin)}</div>
+
+                        <div class="vd-label">Specs</div>
+                        <div class="vd-specs">${specsHtml}</div>
+
+                        <div class="vd-label">Condition</div>
+                        <div class="vd-badges">${condHtml}</div>
+
+                        <div class="vd-label">Features</div>
+                        ${featHtml}
+
+                        ${storeHtml}
+                    </div>
+                </div>`;
+        }
+    </script>
+
+</body>
+</html>

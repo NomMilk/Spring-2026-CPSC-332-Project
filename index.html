@@ -18,7 +18,7 @@
             <li><a href="contacts.html"><button>Contacts</button></a></li>
 
             <li>
-                <input type="text" placeholder="Search By Zip...">
+                <input id="zip-input" type="text" placeholder="Search By Zip..." maxlength="10">
             </li>
         </ul>
 
@@ -32,6 +32,11 @@
     </div>
 
     <div class="MainPageBanner"></div>
+
+    <section id="vehicles-section">
+        <p id="vehicles-count" class="vehicles-count"></p>
+        <div id="vehicles-grid"></div>
+    </section>
 
     <!-- ── Filter Panel ── -->
     <aside id="filter-panel" class="filter-panel" aria-label="Filter Vehicles">
@@ -292,8 +297,12 @@
             }
         });
 
+        document.getElementById('zip-input').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') loadVehicles(buildFilterParams());
+        });
+
         function applyFilters() {
-            // TODO: connect to backend filtering
+            loadVehicles(buildFilterParams());
             toggleFilter();
         }
 
@@ -303,6 +312,165 @@
             panel.querySelectorAll('input[type="text"]').forEach(inp => inp.value = '');
             panel.querySelectorAll('.stepper-input, .filter-input[type="number"]').forEach(inp => inp.value = '');
         }
+
+        // ── Filter helpers ──
+
+        function getSectionChecked(titleStartsWith) {
+            for (const section of document.querySelectorAll('#filter-panel .filter-section')) {
+                const t = section.querySelector('.filter-section-title');
+                if (t && t.textContent.trim().startsWith(titleStartsWith)) {
+                    return Array.from(section.querySelectorAll('input[type="checkbox"]:checked'))
+                        .map(cb => cb.closest('label').textContent.trim());
+                }
+            }
+            return [];
+        }
+
+        function getSectionNumberInput(titleStartsWith) {
+            for (const section of document.querySelectorAll('#filter-panel .filter-section')) {
+                const t = section.querySelector('.filter-section-title');
+                if (t && t.textContent.trim().startsWith(titleStartsWith)) {
+                    const inp = section.querySelector('input[type="number"].filter-input');
+                    return inp ? inp.value.trim() : '';
+                }
+            }
+            return '';
+        }
+
+        function getSectionTextInput(titleStartsWith) {
+            for (const section of document.querySelectorAll('#filter-panel .filter-section')) {
+                const t = section.querySelector('.filter-section-title');
+                if (t && t.textContent.trim().startsWith(titleStartsWith)) {
+                    const inp = section.querySelector('input[type="text"].filter-input');
+                    return inp ? inp.value.trim() : '';
+                }
+            }
+            return '';
+        }
+
+        function buildFilterParams() {
+            const p = new URLSearchParams();
+
+            getSectionChecked('Brand').forEach(v => p.append('brands[]', v));
+
+            const model = getSectionTextInput('Model');
+            if (model) p.set('model', model);
+
+            const yearMin = document.getElementById('year-min').value;
+            const yearMax = document.getElementById('year-max').value;
+            if (yearMin) p.set('year_min', yearMin);
+            if (yearMax) p.set('year_max', yearMax);
+
+            const priceMin = document.getElementById('price-min').value;
+            const priceMax = document.getElementById('price-max').value;
+            if (priceMin) p.set('price_min', priceMin);
+            if (priceMax) p.set('price_max', priceMax);
+
+            const mileageMax = document.getElementById('mileage-max').value;
+            if (mileageMax) p.set('mileage_max', mileageMax);
+
+            getSectionChecked('Exterior Color').forEach(v => p.append('ext_colors[]', v));
+            getSectionChecked('Interior Color').forEach(v => p.append('int_colors[]', v));
+
+            const seating = getSectionNumberInput('Seating');
+            if (seating) p.set('seating_min', seating);
+
+            getSectionChecked('Condition').forEach(v => p.append('conditions[]', v));
+            getSectionChecked('Body Style').forEach(v => p.append('body_styles[]', v));
+            getSectionChecked('Fuel Type').forEach(v => p.append('fuel_types[]', v));
+            getSectionChecked('Transmission').forEach(v => p.append('transmissions[]', v));
+            getSectionChecked('Drivetrain').forEach(v => p.append('drivetrains[]', v));
+
+            const mpg = getSectionNumberInput('MPG');
+            if (mpg) p.set('mpg_min', mpg);
+
+            const range = getSectionNumberInput('Range');
+            if (range) p.set('range_min', range);
+
+            getSectionChecked('Features').forEach(v => p.append('features[]', v));
+
+            const zip = document.getElementById('zip-input').value.trim();
+            if (zip) p.set('zip', zip);
+
+            return p;
+        }
+
+        // ── Vehicle fetch & render ──
+
+        function esc(s) {
+            return String(s ?? '')
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        async function loadVehicles(params) {
+            const grid = document.getElementById('vehicles-grid');
+            grid.innerHTML = '<p class="vehicles-status">Loading...</p>';
+            const qs = params && params.toString() ? '?' + params.toString() : '';
+            try {
+                const res  = await fetch('get_vehicles.php' + qs);
+                const data = await res.json();
+                if (data.error) {
+                    grid.innerHTML = '<p class="vehicles-status">' + esc(data.error) + '</p>';
+                    return;
+                }
+                renderVehicles(data.vehicles || []);
+            } catch {
+                grid.innerHTML = '<p class="vehicles-status">Could not load vehicles.</p>';
+            }
+        }
+
+        function renderVehicles(vehicles) {
+            const grid  = document.getElementById('vehicles-grid');
+            const count = document.getElementById('vehicles-count');
+            count.textContent = 'Showing ' + vehicles.length + ' vehicle' + (vehicles.length !== 1 ? 's' : '');
+            if (!vehicles.length) {
+                grid.innerHTML = '<p class="vehicles-status">No vehicles match your filters.</p>';
+                return;
+            }
+
+            function sepRow(parts) {
+                return parts.filter(Boolean)
+                    .map((s, i) => (i > 0 ? '<span class="vc-sep">·</span>' : '') + `<span>${esc(s)}</span>`)
+                    .join('');
+            }
+
+            grid.innerHTML = vehicles.map(v => {
+                const price   = v.price != null
+                    ? '$' + Number(v.price).toLocaleString()
+                    : 'Call for Price';
+                const mileage = v.mileage != null
+                    ? Number(v.mileage).toLocaleString() + ' mi'
+                    : null;
+
+                const specsHtml  = sepRow([mileage, v.body_style, v.fuel_type]);
+                const metaHtml   = sepRow([
+                    v.exterior_color ? v.exterior_color + ' Ext.' : null,
+                    v.store_name || null
+                ]);
+                const badgesHtml = (v.conditions || [])
+                    .map(c => `<span class="vehicle-badge">${esc(c)}</span>`).join('');
+
+                return `<a class="vehicle-card-link" href="vehicle.html?vin=${encodeURIComponent(v.vin)}">
+                    <div class="vehicle-card">
+                        <div class="vehicle-img-placeholder">
+                            <img src="${esc(v.image_url)}" alt="${esc(v.year + ' ' + v.brand + ' ' + v.model)}"
+                                 onerror="this.style.display='none';this.nextElementSibling.style.display=''">
+                            <span style="display:none">NO IMAGE</span>
+                        </div>
+                        <div class="vehicle-body">
+                            <div class="vehicle-title">${esc(v.year)} ${esc(v.brand)} ${esc(v.model)}</div>
+                            <div class="vehicle-price">${esc(price)}</div>
+                            ${specsHtml  ? `<div class="vehicle-specs">${specsHtml}</div>`   : ''}
+                            ${metaHtml   ? `<div class="vehicle-meta">${metaHtml}</div>`     : ''}
+                            ${badgesHtml ? `<div class="vehicle-badges">${badgesHtml}</div>` : ''}
+                        </div>
+                    </div>
+                </a>`;
+            }).join('');
+        }
+
+        loadVehicles();
     </script>
 
 </body>
