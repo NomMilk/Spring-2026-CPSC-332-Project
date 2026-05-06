@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — GrandTheftDeals</title>
+    <link rel="stylesheet" href="css/global.css">
+    <style>
+        /* ── Admin page layout ── */
+
+        .admin-page
+        {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 40px 64px;
+        }
+
+        .admin-panel
+        {
+            background-color: var(--primary-400);
+            border: 1px solid var(--primary-300);
+            border-radius: 6px;
+            padding: 28px 32px;
+            margin-bottom: 36px;
+        }
+
+        .admin-heading
+        {
+            font-size: 28px;
+            color: var(--primary-100);
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--primary-300);
+            padding-bottom: 10px;
+            margin-bottom: 24px;
+        }
+
+        /* ── Tighter inputs for the denser admin form ── */
+
+        .admin-form .form-group label  { font-size: 14px; }
+        .admin-form .form-group input  { font-size: 18px; border-bottom-width: 2px; padding: 4px 0; }
+        .admin-form .form-submit       { font-size: 22px; padding: 12px; margin-top: 4px; }
+
+        /* ── Select dropdowns ── */
+
+        .form-select
+        {
+            background-color: var(--primary-400);
+            border: none;
+            border-bottom: 2px solid var(--primary-200);
+            color: var(--primary-100);
+            font-family: "Pricedown";
+            font-size: 18px;
+            padding: 4px 0;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: border-color 0.1s linear;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-select option
+        {
+            background-color: var(--primary-500);
+            color: var(--primary-100);
+        }
+
+        .form-select:focus { border-bottom-color: var(--primary-100); }
+
+        /* ── Checkbox grids ── */
+
+        .admin-check-grid
+        {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 8px 16px;
+        }
+
+        .admin-check
+        {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-family: sans-serif;
+            font-size: 14px;
+            color: var(--primary-200);
+            cursor: pointer;
+            transition: color 0.1s linear;
+        }
+
+        .admin-check:hover { color: var(--primary-100); }
+
+        .admin-check input[type="checkbox"]
+        {
+            accent-color: var(--primary-200);
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        /* ── Inventory table ── */
+
+        .admin-table-wrap { overflow-x: auto; }
+
+        .admin-table
+        {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: sans-serif;
+            font-size: 13px;
+            color: var(--primary-200);
+        }
+
+        .admin-table th
+        {
+            text-align: left;
+            padding: 10px 14px;
+            background-color: var(--primary-500);
+            color: var(--primary-100);
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--primary-300);
+            white-space: nowrap;
+        }
+
+        .admin-table td
+        {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--primary-500);
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .admin-table tr:last-child td { border-bottom: none; }
+
+        .admin-table tr:hover td { background-color: rgba(255,255,255,0.03); }
+
+        .td-vin
+        {
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--primary-300);
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Delete button ── */
+
+        .btn-delete
+        {
+            font-family: sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--secondary2-100);
+            background: none;
+            border: 1px solid var(--secondary2-300);
+            border-radius: 3px;
+            padding: 4px 12px;
+            cursor: pointer;
+            transition: background-color 0.1s linear, color 0.1s linear;
+        }
+
+        .btn-delete:hover
+        {
+            background-color: var(--secondary2-300);
+            color: var(--primary-100);
+        }
+
+        .btn-delete:disabled { opacity: 0.4; cursor: default; }
+
+        /* ── Status row ── */
+
+        .admin-status
+        {
+            font-family: sans-serif;
+            font-size: 14px;
+            color: var(--primary-300);
+            text-align: center;
+            padding: 28px;
+        }
+
+        /* ── Responsive ── */
+
+        @media (max-width: 768px)
+        {
+            .admin-page  { padding: 20px 16px 48px; }
+            .admin-panel { padding: 20px 16px; }
+        }
+
+        @media (max-width: 600px)
+        {
+            .form-row { flex-direction: column; gap: 16px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+    <nav>
+        <ul class="nav-buttons">
+            <li><a href="index.html"><button>Home</button></a></li>
+            <li><a href="account.html"><button>Account</button></a></li>
+            <li><a href="services.html"><button>Services</button></a></li>
+            <li><a href="contacts.html"><button>Contacts</button></a></li>
+        </ul>
+        <img src="images/GrandTheftDeals.png" alt="Grand Theft Deals" width="200">
+    </nav>
+    </header>
+
+    <div class="admin-page">
+
+        <!-- ══ Add Vehicle ════════════════════════════════════════════════ -->
+        <div class="admin-panel">
+            <div class="admin-heading">Add Vehicle</div>
+
+            <form id="add-form" class="admin-form" onsubmit="handleAdd(event)">
+
+                <!-- VIN -->
+                <div class="form-group">
+                    <label for="f-vin">VIN</label>
+                    <input id="f-vin" name="vin" type="text" placeholder="17-character VIN" maxlength="17" required>
+                </div>
+
+                <!-- Brand / Model -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-brand">Brand</label>
+                        <input id="f-brand" name="brand" type="text" placeholder="Toyota" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-model">Model</label>
+                        <input id="f-model" name="model" type="text" placeholder="Camry" required>
+                    </div>
+                </div>
+
+                <!-- Year / Mileage / Price -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-year">Year</label>
+                        <input id="f-year" name="year" type="number" placeholder="2023" min="1900" max="2100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-mileage">Mileage</label>
+                        <input id="f-mileage" name="mileage" type="number" placeholder="25000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="f-price">Price ($)</label>
+                        <input id="f-price" name="price" type="number" placeholder="24999" min="0" step="0.01">
+                    </div>
+                </div>
+
+                <!-- Spec dropdowns -->
+                <div class="form-section-label" style="margin-top:8px">Specs</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-body">Body Style</label>
+                        <select id="f-body" name="body_style_id" class="form-select">
+                            <option value="">— Select —</option>
+                            <option value="1">Sedan</option>
+                            <option value="2">SUV</option>
+                            <option value="3">Truck</option>
+                            <option value="4">Van</option>
+                            <option value="5">Coupe</option>
+                            <option value="6">Hatchback</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-drive">Drivetrain</label>
+                        <select id="f-drive" name="drivetrain_id" class="form-select">
+                            <option value="">— Select —</option>
+                            <option value="1">4WD</option>
+                            <option value="2">AWD</option>
+                            <option value="3">FWD</option>
+                            <option value="4">RWD</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-trans">Transmission</label>
+                        <select id="f-trans" name="trans_id" class="form-select">
+                            <option value="">— Select —</option>
+                            <option value="1">Automatic</option>
+                            <option value="2">CVT</option>
+                            <option value="3">Manual</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-fuel">Fuel Type</label>
+                        <select id="f-fuel" name="fuel_id" class="form-select">
+                            <option value="">— Select —</option>
+                            <option value="1">EV</option>
+                            <option value="2">PHEV</option>
+                            <option value="3">Hybrid</option>
+                            <option value="4">Gas</option>
+                            <option value="5">Diesel</option>
+                            <option value="6">Hydrogen</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Colors / Seating -->
+                <div class="form-section-label" style="margin-top:8px">Details</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-ext">Exterior Color</label>
+                        <input id="f-ext" name="ext_color" type="text" placeholder="White">
+                    </div>
+                    <div class="form-group">
+                        <label for="f-int">Interior Color</label>
+                        <input id="f-int" name="int_color" type="text" placeholder="Black">
+                    </div>
+                    <div class="form-group">
+                        <label for="f-seats">Seating Capacity</label>
+                        <input id="f-seats" name="seating" type="number" placeholder="5" min="1" max="15">
+                    </div>
+                </div>
+
+                <!-- MPG / EV Range -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-mpgc">MPG City</label>
+                        <input id="f-mpgc" name="mpg_city" type="number" placeholder="28" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="f-mpgh">MPG Highway</label>
+                        <input id="f-mpgh" name="mpg_hwy" type="number" placeholder="36" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="f-ev">EV Range (mi)</label>
+                        <input id="f-ev" name="ev_range" type="number" placeholder="300" min="1">
+                    </div>
+                </div>
+
+                <!-- Store -->
+                <div class="form-section-label" style="margin-top:8px">Location</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-store">Store</label>
+                        <select id="f-store" name="store_id" class="form-select">
+                            <option value="">— Select —</option>
+                            <option value="1">GrandTheftDeals LA</option>
+                            <option value="2">GrandTheftDeals Anaheim</option>
+                            <option value="3">GrandTheftDeals Sherman Oaks</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Condition -->
+                <div class="form-section-label" style="margin-top:8px">Condition</div>
+                <div class="admin-check-grid">
+                    <label class="admin-check"><input type="checkbox" name="conditions[]" value="1"> Certified Pre-Owned</label>
+                    <label class="admin-check"><input type="checkbox" name="conditions[]" value="2"> No Accidents</label>
+                    <label class="admin-check"><input type="checkbox" name="conditions[]" value="3"> Clean Title</label>
+                    <label class="admin-check"><input type="checkbox" name="conditions[]" value="4"> One Owner</label>
+                </div>
+
+                <!-- Features -->
+                <div class="form-section-label" style="margin-top:16px">Features</div>
+                <div class="admin-check-grid">
+                    <label class="admin-check"><input type="checkbox" name="features[]" value="1"> Backup Camera</label>
+                    <label class="admin-check"><input type="checkbox" name="features[]" value="2"> Navigation</label>
+                    <label class="admin-check"><input type="checkbox" name="features[]" value="3"> Moonroof</label>
+                    <label class="admin-check"><input type="checkbox" name="features[]" value="4"> Parking Sensors</label>
+                    <label class="admin-check"><input type="checkbox" name="features[]" value="5"> Third Row Seating</label>
+                    <label class="admin-check"><input type="checkbox" name="features[]" value="6"> Tow Hitch</label>
+                </div>
+
+                <div id="add-error"   class="form-error   hidden" style="margin-top:16px"></div>
+                <div id="add-success" class="form-success hidden" style="margin-top:16px"></div>
+                <button type="submit" class="form-submit" style="margin-top:20px">Add Vehicle</button>
+            </form>
+        </div>
+
+        <!-- ══ Inventory ═════════════════════════════════════════════════ -->
+        <div class="admin-panel">
+            <div class="admin-heading">Inventory</div>
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>VIN</th>
+                            <th>Year</th>
+                            <th>Brand</th>
+                            <th>Model</th>
+                            <th>Price</th>
+                            <th>Mileage</th>
+                            <th>Body</th>
+                            <th>Fuel</th>
+                            <th>Store</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="inv-tbody">
+                        <tr><td colspan="10" class="admin-status">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div><!-- .admin-page -->
+
+    <script>
+        function esc(s) {
+            return String(s ?? '')
+                .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function showMsg(id, msg) {
+            const el = document.getElementById(id);
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
+
+        function clearMsgs() {
+            ['add-error', 'add-success'].forEach(id =>
+                document.getElementById(id).classList.add('hidden')
+            );
+        }
+
+        // ── Inventory table ──────────────────────────────────────────────
+
+        async function loadInventory() {
+            const tbody = document.getElementById('inv-tbody');
+            tbody.innerHTML = '<tr><td colspan="10" class="admin-status">Loading...</td></tr>';
+            try {
+                const res  = await fetch('get_vehicles.php');
+                const data = await res.json();
+                renderTable(data.vehicles || []);
+            } catch {
+                tbody.innerHTML = '<tr><td colspan="10" class="admin-status">Failed to load inventory.</td></tr>';
+            }
+        }
+
+        function renderTable(vehicles) {
+            const tbody = document.getElementById('inv-tbody');
+            if (!vehicles.length) {
+                tbody.innerHTML = '<tr><td colspan="10" class="admin-status">No vehicles in inventory.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = vehicles.map(v => {
+                const price   = v.price   != null ? '$' + Number(v.price).toLocaleString()           : '—';
+                const mileage = v.mileage != null ? Number(v.mileage).toLocaleString() + ' mi'       : '—';
+                return `<tr>
+                    <td class="td-vin">${esc(v.vin)}</td>
+                    <td>${esc(v.year)}</td>
+                    <td>${esc(v.brand)}</td>
+                    <td>${esc(v.model)}</td>
+                    <td>${esc(price)}</td>
+                    <td>${esc(mileage)}</td>
+                    <td>${esc(v.body_style  || '—')}</td>
+                    <td>${esc(v.fuel_type   || '—')}</td>
+                    <td>${esc(v.store_name  || '—')}</td>
+                    <td>
+                        <button class="btn-delete"
+                                onclick="handleDelete('${esc(v.vin)}', this)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        async function handleDelete(vin, btn) {
+            if (!confirm('Delete vehicle ' + vin + '?\nThis cannot be undone.')) return;
+            btn.disabled = true;
+            const body = new FormData();
+            body.append('action', 'delete');
+            body.append('vin', vin);
+            try {
+                const res  = await fetch('admin.php', { method: 'POST', body });
+                const data = await res.json();
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                    btn.disabled = false;
+                } else {
+                    loadInventory();
+                }
+            } catch {
+                alert('Could not connect to server.');
+                btn.disabled = false;
+            }
+        }
+
+        // ── Add vehicle ──────────────────────────────────────────────────
+
+        async function handleAdd(event) {
+            event.preventDefault();
+            clearMsgs();
+
+            const btn  = event.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+
+            const body = new FormData(event.target);
+            body.set('action', 'add');
+
+            try {
+                const res  = await fetch('admin.php', { method: 'POST', body });
+                const data = await res.json();
+                if (data.error) {
+                    showMsg('add-error', data.error);
+                } else {
+                    event.target.reset();
+                    showMsg('add-success', 'Vehicle added to inventory.');
+                    loadInventory();
+                }
+            } catch {
+                showMsg('add-error', 'Could not connect to server. Please try again.');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        loadInventory();
+    </script>
+
+</body>
+</html>
