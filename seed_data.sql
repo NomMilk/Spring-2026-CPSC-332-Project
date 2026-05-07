@@ -16,7 +16,7 @@ INSERT INTO Feature (feature_name) VALUES
 ('Third Row Seating'),
 ('Tow Hitch');
 
-INSERT INTO `Condition` (condition_name) VALUES
+INSERT INTO Vehicle_Condition_Type (condition_name) VALUES
 ('Certified Pre-Owned'),
 ('No Accidents'),
 ('Clean Title'),
@@ -117,7 +117,7 @@ INSERT INTO Staff (user_id, store_id, role_id) VALUES
 -- transmission_id: 1=Automatic,2=CVT,3=Manual
 -- fuel_type_id: 1=EV,2=PHEV,3=Hybrid,4=Gas,5=Diesel,6=Hydrogen
 
-INSERT INTO Vehicle (vin, body_style_id, drivetrain_id, transmission_id, fuel_type_id, at_store_id, brand, model, year, mileage, price, interior_color, exterior_color, seating_capacity, mpg_city, mpg_highway, ev_range) VALUES
+INSERT INTO Vehicle (vin, body_style_id, drivetrain_id, transmission_id, fuel_type_id, store_id, brand, model, year, mileage, price, interior_color, exterior_color, seating_capacity, mpg_city, mpg_highway, ev_range) VALUES
 ('1HGBH41JXMN109186', 1, 3, 1, 4, 1, 'Toyota',   'Camry',        2022, 24000,  22500.00, 'Black',  'White',  5,  28, 39, NULL),
 ('2T1BURHE0JC037370', 6, 3, 2, 3, 1, 'Honda',    'Civic',        2023, 11000,  24999.00, 'Gray',   'Silver', 5,  40, 50, NULL),
 ('1C4RJFBG5FC625797', 2, 2, 1, 4, 2, 'Jeep',     'Grand Cherokee',2021,38000,  34500.00, 'Black',  'Black',  5,  19, 26, NULL),
